@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <import type="tran.nam.alarmtimer.type.ToolbarType" />
+
+        <variable
+            name="toolbarModel"
+            type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="ivOptionalEndClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalEndClick" />
+
+        <variable
+            name="ivOptionalStartClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalStartClick" />
+
+        <variable
+            name="tvOptionalStartClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnTvOptionalStartClick" />
+
+        <variable
+            name="tvOptionalEndClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnTvOptionalEndClick" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/toolbar_color">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_optional_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{toolbarModel.isIvOptionalStart}"
+            app:srcVector="@{toolbarModel.srcOptionalStart}"
+            android:onClick="@{() -> ivOptionalStartClick.onIvOptionalStartClick(toolbarModel.type)}"
+            tools:visibility="visible" />
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_optional_start"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:text="@{toolbarModel.textOptionStart}"
+            app:fontSize="8"
+            app:fontStyle="medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{toolbarModel.isTextOptionStart}"
+            android:onClick="@{() -> tvOptionalStartClick.onTvOptionalStartClick(toolbarModel.type)}"
+            tools:text="Cancel"
+            tools:visibility="visible" />
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:id="@+id/NTTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:text="@{toolbarModel.textTitle}"
+            app:fontSize="10"
+            app:fontStyle="medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{toolbarModel.isTitle}"
+            tools:text="Wre AlarmModel" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_optional_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{toolbarModel.isIvOptionalEnd}"
+            app:srcVector="@{toolbarModel.srcOptionalEnd}"
+            android:onClick="@{() -> ivOptionalEndClick.onIvOptionalEndClick(toolbarModel.type)}"
+            tools:visibility="visible" />
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:id="@+id/tv_optional_end"
+            android:textColor="@android:color/white"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@{toolbarModel.textOptionEnd}"
+            app:fontSize="8"
+            app:fontStyle="medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visible="@{toolbarModel.isTextOptionEnd}"
+            android:onClick="@{() -> tvOptionalEndClick.onTvOptionalEndClick(toolbarModel.type)}"
+            tools:text="Done"
+            tools:visibility="visible" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:visible="@{toolbarModel.isLine}" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

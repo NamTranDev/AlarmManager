@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="toolbarModel"
+            type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="itemToolbarClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalStartClick" />
+
+        <variable
+            name="supportHomeClick"
+            type="tran.nam.alarmtimer.callback.SupportHomeItemClick" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baclground_app">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar_layout"
+            app:ivOptionalStartClick="@{() -> itemToolbarClick.onIvOptionalStartClick(toolbarModel.type)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarModel="@{toolbarModel}" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guide_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.075" />
+
+            <tran.nam.alarmtimer.widget.NTTextView
+                android:id="@+id/tv_title_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wr Electronics"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                app:fontSize="14"
+                app:fontStyle="medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guide_line" />
+
+            <tran.nam.alarmtimer.widget.NTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_contact"
+                android:text="Contact:"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="20dp"
+                app:fontSize="8"
+                app:fontStyle="medium"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_app" />
+
+            <tran.nam.alarmtimer.widget.NTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_phone"
+                android:layout_marginTop="20dp"
+                android:text="0435919502"
+                android:textColor="@android:color/white"
+                android:layout_marginStart="10dp"
+                android:onClick="@{() -> supportHomeClick.onPhoneClick(tvPhone.getText().toString())}"
+                app:fontSize="8"
+                app:fontStyle="medium"
+                app:layout_constraintStart_toEndOf="@+id/tv_contact"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_app" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#378bee"
+                app:layout_constraintStart_toStartOf="@+id/tv_phone"
+                app:layout_constraintEnd_toEndOf="@+id/tv_phone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
+
+            <tran.nam.alarmtimer.widget.NTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_info"
+                android:layout_marginTop="20dp"
+                android:text="If you need more infomation, please visit our website for more details:"
+                android:textColor="@android:color/white"
+                app:fontSize="8"
+                app:fontStyle="medium"
+                app:layout_constraintTop_toBottomOf="@+id/tv_contact" />
+
+            <tran.nam.alarmtimer.widget.NTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_web"
+                android:layout_marginTop="20dp"
+                android:text="http://www.wrelectronics.com.au/"
+                android:textColor="#378bee"
+                android:onClick="@{() -> supportHomeClick.onWebClick(tvWeb.getText().toString())}"
+                app:fontSize="8"
+                app:fontStyle="medium"
+                app:layout_constraintTop_toBottomOf="@+id/tv_info" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

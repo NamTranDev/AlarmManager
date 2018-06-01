@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tran.nam.alarmtimer">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:name=".application.view.AppState"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".application.view.splash.SplashActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".application.view.home.SettingHomeActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".application.view.alarm.AddAlarmActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".application.view.main.MainActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".application.view.home.SupportHomeActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".application.view.home.RingToneActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".application.view.alarm.AlarmActivity"
+            android:theme="@style/ActivityTranslucent"
+            android:screenOrientation="unspecified"
+            android:showOnLockScreen="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"/>
+
+        <receiver
+            android:name=".controller.OnBootUpReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".controller.OnBootUpAlarmScheduler"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+    </application>
+
+</manifest>

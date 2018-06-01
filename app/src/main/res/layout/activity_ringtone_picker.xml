@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="toolbarModel"
+            type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="ivOptionalStartClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalStartClick" />
+
+        <variable
+            name="ivOptionalEndClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalEndClick" />
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baclground_app">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar_layout"
+            app:ivOptionalStartClick="@{() -> ivOptionalStartClick.onIvOptionalStartClick(toolbarModel.type)}"
+            app:ivOptionalEndClick="@{() -> ivOptionalEndClick.onIvOptionalEndClick(toolbarModel.type)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarModel="@{toolbarModel}" />
+
+        <ViewFlipper
+            android:id="@+id/view_flipper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!--0. Progress-->
+            <ProgressBar
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"/>
+
+            <!--1. Ringtone list-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_ring_tone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        </ViewFlipper>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,0 +1,56 @@
+<resources>
+
+    <declare-styleable name="Text">
+        <attr name="fontStyle" format="enum">
+            <enum name="regular" value="0" />
+            <enum name="medium" value="1" />
+            <enum name="light" value="2" />
+            <enum name="thin" value="3" />
+            <enum name="digital" value="4" />
+        </attr>
+        <attr name="fontSize" format="float" />
+        <attr name="fontSizeHint" format="float" />
+        <attr name="fontSpacing" format="float" />
+        <attr name="fontAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <!-- Don't touch this -->
+    <attr name="numberPickerStyle" format="reference" />
+
+    <declare-styleable name="NumberPicker">
+        <!-- @hide Color for the solid color background if such for optimized rendering. -->
+        <attr name="solidColor" format="color|reference" />
+        <!-- @hide The divider for making the selection area. -->
+        <attr name="selectionDivider" format="reference" />
+        <!-- @hide The height of the selection divider. -->
+        <attr name="selectionDividerHeight" format="dimension" />
+        <!-- @hide The distance between the two selection dividers. -->
+        <attr name="selectionDividersDistance" format="dimension" />
+        <!-- @hide The min height of the NumberPicker. -->
+        <attr name="internalMinHeight" format="dimension" />
+        <!-- @hide The max height of the NumberPicker. -->
+        <attr name="internalMaxHeight" format="dimension" />
+        <!-- @hide The min width of the NumberPicker. -->
+        <attr name="internalMinWidth" format="dimension" />
+        <!-- @hide The max width of the NumberPicker. -->
+        <attr name="internalMaxWidth" format="dimension" />
+        <!-- @hide The layout of the number picker. -->
+        <attr name="internalLayout" format="reference" />
+        <!-- @hide The drawable for pressed virtual (increment/decrement) buttons. -->
+        <attr name="virtualButtonPressedDrawable" format="reference" />
+    </declare-styleable>
+
+    <!-- The TimePicker style. -->
+    <attr name="timePickerStyle" format="reference" />
+
+    <declare-styleable name="WeekdaysPicker">
+        <attr name="enabled" format="boolean" />
+        <attr name="highlight_color" format="color" />
+        <attr name="background_color" format="color" />
+        <attr name="text_color" format="color" />
+        <attr name="sunday_first_day" format="boolean" />
+        <attr name="show_weekend" format="boolean" />
+        <attr name="full_size" format="boolean" />
+        <attr name="recurrence" format="boolean" />
+    </declare-styleable>
+</resources>

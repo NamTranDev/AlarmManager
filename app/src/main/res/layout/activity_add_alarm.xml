@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+        <import type="tran.nam.alarmtimer.application.model.AlarmModel"/>
+        <import type="android.view.View"/>
+
+        <variable
+            name="toolbarModel"
+            type="tran.nam.alarmtimer.application.model.ToolbarModel" />
+
+        <variable
+            name="tvOptionalStartClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnTvOptionalStartClick" />
+
+        <variable
+            name="tvOptionalEndClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnTvOptionalEndClick" />
+
+        <variable
+            name="itemClick"
+            type="tran.nam.alarmtimer.callback.AddAlarmItemClick" />
+
+        <variable
+            name="alarmModel"
+            type="tran.nam.alarmtimer.application.model.AlarmModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/baclground_app">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/include_toolbar_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:toolbarModel="@{toolbarModel}"
+            app:tvOptionalEndClick="@{() -> tvOptionalEndClick.onTvOptionalEndClick(toolbarModel.type)}"
+            app:tvOptionalStartClick="@{() -> tvOptionalStartClick.onTvOptionalStartClick(toolbarModel.type)}" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <tran.nam.alarmtimer.widget.TimePicker
+                    android:id="@+id/time_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:select24h="@{alarmModel.is24h}"/>
+
+                <tran.nam.alarmtimer.widget.WeekdaysPicker
+                    android:id="@+id/date_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:background_color="@android:color/transparent"
+                    app:highlight_color="@android:color/white"
+                    app:text_color="@android:color/black" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date_picker">
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_lable_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:onClick="@{() -> itemClick.onLableItemClick()}"
+                        android:text="Name"
+                        android:textColor="@android:color/white"
+                        app:fontSize="7"
+                        app:fontStyle="medium"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_lable"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_lable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:paddingTop="2dp"
+                        android:onClick="@{() -> itemClick.onLableItemClick()}"
+                        android:text="@{alarmModel.lable.length() == 0 ? `Input Label` : alarmModel.lable}"
+                        tools:text="Lable"
+                        android:textColor="@android:color/white"
+                        app:fontSize="6"
+                        app:fontStyle="light"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_line1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_lable_title" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guide_line1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.25" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toTopOf="@+id/guide_line1" />
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_song_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:onClick="@{() -> itemClick.onSongItemClick()}"
+                        android:text="Sound"
+                        android:textColor="@android:color/white"
+                        app:fontSize="7"
+                        app:fontStyle="medium"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_song"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/guide_line1"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_song"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:paddingTop="2dp"
+                        android:onClick="@{() -> itemClick.onSongItemClick()}"
+                        app:nameRingtone="@{alarmModel.ringtone}"
+                        tools:text="Default"
+                        android:textColor="@android:color/white"
+                        app:fontSize="6"
+                        app:fontStyle="light"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_line2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_song_title" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guide_line2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toTopOf="@+id/guide_line2" />
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_duration_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:onClick="@{() -> itemClick.onDurationItemClick()}"
+                        android:text="Duration"
+                        android:textColor="@android:color/white"
+                        app:fontSize="7"
+                        app:fontStyle="medium"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_duration"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/guide_line2"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <tran.nam.alarmtimer.widget.NTTextView
+                        android:id="@+id/tv_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:paddingTop="2dp"
+                        android:onClick="@{() -> itemClick.onDurationItemClick()}"
+                        tools:text="5 minutes"
+                        android:textColor="@android:color/white"
+                        android:text= "@{alarmModel.getDuration()}"
+                        app:fontSize="6"
+                        app:fontStyle="light"
+                        app:layout_constraintBottom_toTopOf="@+id/guide_line3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_duration_title" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/guide_line3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.75" />
+
+                    <View
+                        android:id="@+id/line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_color"
+                        app:layout_constraintTop_toTopOf="@+id/guide_line3" />
+
+                    <tran.nam.alarmtimer.widget.NTButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="#F04D23"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="50dp"
+                        android:paddingStart="50dp"
+                        android:paddingTop="10dp"
+                        android:text="Preview"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:onClick="@{() -> itemClick.onPreviewItemClick()}"
+                        app:fontSize="10"
+                        app:fontStyle="medium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+                </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

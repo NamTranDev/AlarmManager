@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="itemClick"
+            type="tran.nam.alarmtimer.callback.DialogItemClick"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_dialog"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:padding="10dp"
+        tools:layout_width="600dp"
+        tools:layout_height="200dp">
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_title"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="10dp"
+            android:text="Duration"
+            app:fontSize="8"
+            app:fontStyle="medium"/>
+
+        <tran.nam.alarmtimer.widget.TimeSecondPicker
+            android:id="@+id/duration_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_cancel"
+            android:text="Cancel"
+            android:textColor="#1ca0d0"
+            android:layout_marginEnd="10dp"
+            android:textAllCaps="true"
+            android:padding="10dp"
+            android:onClick="@{() -> itemClick.onCancelClick()}"
+            app:fontSize="6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_ok" />
+
+        <tran.nam.alarmtimer.widget.NTTextView
+            android:id="@+id/tv_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ok"
+            android:padding="10dp"
+            android:textAllCaps="true"
+            android:textColor="#1ca0d0"
+            android:onClick="@{() -> itemClick.onOkClick()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:fontSize="6"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

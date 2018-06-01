@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_height">50dp</dimen>
+    <dimen name="tab_layout_height">50dp</dimen>
+    <dimen name="margin_small_button_emergency">10dp</dimen>
+    <dimen name="margin_large_button_emergency">20dp</dimen>
+    <dimen name="padding_button">5dp</dimen>
+
+    <dimen name="text_size_date">40sp</dimen>
+    <dimen name="text_size_time">80sp</dimen>
+    <dimen name="text_size_description_time">5sp</dimen>
+    <dimen name="margin_date_and_time">10dp</dimen>
+    <dimen name="text_size_another_date">20sp</dimen>
+    <dimen name="text_size_description">20sp</dimen>
+    <dimen name="padding_text_timer">1dp</dimen>
+    <dimen name="timer_margin">10dp</dimen>
+</resources>

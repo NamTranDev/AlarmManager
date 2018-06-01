@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="tab_color_selected">#D9000000</color>
+    <color name="toolbar_color">@color/baclground_app</color>
+    <color name="black_transparent_low">#33100000</color>
+    <color name="baclground_splash">#20284c</color>
+    <color name="baclground_app">#21294A</color>
+    <color name="line_color">#979797</color>
+    <color name="transparent">#00000000</color>
+    <color name="alarm_item_background_choose">#26ffffff</color>
+    <color name="alarm_item_background_unchoose">#ffffff</color>
+    <color name="time_color">#0000FF</color>
+    <color name="text_timer_description">#878787</color>
+</resources>
