@@ -29,7 +29,7 @@ public class AlarmModel extends BaseObservable implements Parcelable {
     public int hour;
     public int minute;
     public int[] day;
-    public RingToneModel ringtone;
+    public ListRingToneModel ringtone;
     public long durationMinute;
     public long durationSecond;
     public boolean isWetMode;
@@ -41,7 +41,7 @@ public class AlarmModel extends BaseObservable implements Parcelable {
     public AlarmModel() {
     }
 
-    public AlarmModel(String lable, int hour, int minute, int[] day, RingToneModel ringtone, long durationMinute,long durationSecond, boolean isWetMode, boolean isEnable) {
+    public AlarmModel(String lable, int hour, int minute, int[] day, ListRingToneModel ringtone, long durationMinute, long durationSecond, boolean isWetMode, boolean isEnable) {
         this.lable = lable;
         this.hour = hour;
         this.minute = minute;
@@ -58,10 +58,10 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         return obj instanceof AlarmModel && ((AlarmModel) obj).id == id;
     }
 
-    public String getDuration(){
+    public String getDuration() {
         if (durationMinute == 0)
-            return String.format("%s sec",durationSecond);
-        return String.format("%s min %s sec",durationMinute,durationSecond);
+            return String.format("%s sec", durationSecond);
+        return String.format("%s min %s sec", durationMinute, durationSecond);
     }
 
     public String getTime() {
@@ -84,10 +84,10 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         return hour < 12 ? "AM" : "PM";
     }
 
-    public void setCountdownTimer(long timer){
+    public void setCountdownTimer(long timer) {
         int seconds = (int) ((timer / 1000) % 60);
         int minutes = (int) ((timer / 1000) / 60);
-        countdownTimer = String.format("%s : %s", minutes > 9 ? minutes : "0" + minutes,seconds > 9 ? seconds : "0" + seconds);
+        countdownTimer = String.format("%s : %s", minutes > 9 ? minutes : "0" + minutes, seconds > 9 ? seconds : "0" + seconds);
         notifyChange();
     }
 
@@ -125,7 +125,7 @@ public class AlarmModel extends BaseObservable implements Parcelable {
 
     private boolean isRecurring(int day) {
         checkDay(day);
-        for (int i = 0; i < this.day.length;i++){
+        for (int i = 0; i < this.day.length; i++) {
             if (this.day[i] == day)
                 return true;
         }
@@ -203,12 +203,12 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         }
     }
 
-    public List<Integer> getListDate(){
+    public List<Integer> getListDate() {
         List<Integer> integers = new ArrayList<>();
         if (day == null || day.length == 0)
             return integers;
 
-        for (int i = 0 ; i<day.length;i++){
+        for (int i = 0; i < day.length; i++) {
             integers.add(day[i]);
         }
 
@@ -265,7 +265,7 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         this.hour = in.readInt();
         this.minute = in.readInt();
         this.day = in.createIntArray();
-        this.ringtone = in.readParcelable(RingToneModel.class.getClassLoader());
+        this.ringtone = in.readParcelable(ListRingToneModel.class.getClassLoader());
         this.durationMinute = in.readLong();
         this.durationSecond = in.readLong();
         this.isWetMode = in.readByte() != 0;

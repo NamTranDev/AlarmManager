@@ -55,13 +55,13 @@ public class SettingHomeViewModel extends BaseViewModel {
 
     public void onCheckChange24H(boolean isChecked){
         mPreferenceModel.is24h = isChecked;
-        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.defaultRingtone.name, mPreferenceModel.defaultRingtone.uri);
+        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.listRingToneEntity());
         isChange = true;
     }
 
     public void onCheckWetMode(boolean isChecked){
         mPreferenceModel.isWetMode = isChecked;
-        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.defaultRingtone.name, mPreferenceModel.defaultRingtone.uri);
+        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.listRingToneEntity());
         mGetListAlarmUseCase.execute(new GetListAlarm(),0);
         isChange = true;
     }

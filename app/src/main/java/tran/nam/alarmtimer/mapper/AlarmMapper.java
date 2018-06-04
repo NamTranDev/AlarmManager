@@ -13,10 +13,10 @@ import tran.nam.util.Checker;
 @Singleton
 public class AlarmMapper {
 
-    private RingToneMapper ringtoneMapper;
+    private ListRingToneMapper ringtoneMapper;
 
     @Inject
-    public AlarmMapper(RingToneMapper ringtoneMapper) {
+    public AlarmMapper(ListRingToneMapper ringtoneMapper) {
         this.ringtoneMapper = ringtoneMapper;
     }
 
@@ -30,19 +30,19 @@ public class AlarmMapper {
         if (data == null) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        final AlarmModel alarmEntity = new AlarmModel();
-        alarmEntity.id = data.id;
-        alarmEntity.lable = data.lable;
-        alarmEntity.hour = data.hour;
-        alarmEntity.minute = data.minute;
-        alarmEntity.day = data.day;
-        alarmEntity.ringtone = ringtoneMapper.transform(data.ringtone);
-        alarmEntity.durationMinute = data.durationMinute;
-        alarmEntity.durationSecond = data.durationSecond;
-        alarmEntity.isEnable = data.isEnable;
-        alarmEntity.isWetMode = data.isWetMode;
+        final AlarmModel alarmModel = new AlarmModel();
+        alarmModel.id = data.id;
+        alarmModel.lable = data.lable;
+        alarmModel.hour = data.hour;
+        alarmModel.minute = data.minute;
+        alarmModel.day = data.day;
+        alarmModel.ringtone = ringtoneMapper.transform(data.listRingToneEntity);
+        alarmModel.durationMinute = data.durationMinute;
+        alarmModel.durationSecond = data.durationSecond;
+        alarmModel.isEnable = data.isEnable;
+        alarmModel.isWetMode = data.isWetMode;
 
-        return alarmEntity;
+        return alarmModel;
     }
 
     /**

@@ -5,6 +5,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import tran.nam.util.Logger;
 
 @Entity(tableName = "AlarmData")
@@ -35,8 +37,8 @@ public class AlarmData {
         this.isEnable = isEnable;
     }
 
-    public RingToneData ringToneData() {
-        return new Gson().fromJson(ringtone, RingToneData.class);
+    public ListRingTone ringToneData() {
+        return new Gson().fromJson(ringtone, ListRingTone.class);
     }
 
     public int[] getDate() {

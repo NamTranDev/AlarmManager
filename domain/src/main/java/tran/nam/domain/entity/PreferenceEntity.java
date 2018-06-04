@@ -4,5 +4,5 @@ public class PreferenceEntity {
 
     public boolean is24h;
     public boolean isWetMode;
-    public RingToneEntity defaultRingtone;
+    public ListRingToneEntity listRingToneEntity;
 }

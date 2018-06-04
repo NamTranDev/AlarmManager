@@ -35,10 +35,10 @@ import tran.nam.util.Checker;
  */
 public class AlarmEntityDataMapper {
 
-    private RingToneEntityMapper ringToneEntityMapper;
+    private ListRingToneEntityMapper ringToneEntityMapper;
 
     @Inject
-    public AlarmEntityDataMapper(RingToneEntityMapper ringToneEntityMapper) {
+    public AlarmEntityDataMapper(ListRingToneEntityMapper ringToneEntityMapper) {
         this.ringToneEntityMapper = ringToneEntityMapper;
     }
 
@@ -58,7 +58,7 @@ public class AlarmEntityDataMapper {
         alarmEntity.hour = data.hour;
         alarmEntity.minute = data.minute;
         alarmEntity.day = data.getDate();
-        alarmEntity.ringtone = ringToneEntityMapper.transform(data.ringToneData());
+        alarmEntity.listRingToneEntity = ringToneEntityMapper.transform(data.ringToneData());
         alarmEntity.durationMinute = data.durationMinute;
         alarmEntity.durationSecond = data.durationSecond;
         alarmEntity.isEnable = data.isEnable;
@@ -90,6 +90,6 @@ public class AlarmEntityDataMapper {
 
     public AlarmData convert(AlarmEntity alarmEntity){
         return new AlarmData(alarmEntity.id,alarmEntity.lable,alarmEntity.hour,alarmEntity.minute, Arrays.toString(alarmEntity.day)
-                ,new Gson().toJson(alarmEntity.ringtone, RingToneEntity.class),alarmEntity.durationMinute,alarmEntity.durationSecond,alarmEntity.isWetMode,alarmEntity.isEnable);
+                ,new Gson().toJson(alarmEntity.listRingToneEntity, RingToneEntity.class),alarmEntity.durationMinute,alarmEntity.durationSecond,alarmEntity.isWetMode,alarmEntity.isEnable);
     }
 }

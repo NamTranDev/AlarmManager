@@ -29,4 +29,17 @@ public class RingToneEntityMapper {
 
         return ringToneEntity;
     }
+
+    /**
+     * Transform a {@link RingToneEntity} into an {@link RingToneData}.
+     *
+     * @param data Object to be transformed.
+     * @return {@link RingToneData}.
+     */
+    public RingToneData transform(RingToneEntity data) {
+        if (data == null) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+        return new RingToneData(data.name,data.uri);
+    }
 }

@@ -12,8 +12,10 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import tran.nam.domain.entity.AlarmEntity;
+import tran.nam.domain.entity.ListRingToneEntity;
 import tran.nam.domain.entity.PreferenceEntity;
 import tran.nam.domain.mapper.DataEntityMapper;
+import tran.nam.domain.mapper.ListRingToneEntityMapper;
 import tran.nam.domain.mapper.PreferenceEntityMapper;
 import tran.nam.flatform.database.DBProvider;
 import tran.nam.flatform.local.IPreference;
@@ -27,13 +29,16 @@ public class Respository implements IRespository {
     private PreferenceEntityMapper mPrefMapper;
     private final DBProvider mDbProvider;
     private final DataEntityMapper mDataMaper;
+    private final ListRingToneEntityMapper mListRingToneEntityMapper;
 
     @Inject
-    Respository(IPreference iPreference, PreferenceEntityMapper mPrefMapper, DBProvider mDbProvider, DataEntityMapper mDataMaper) {
+    Respository(IPreference iPreference, PreferenceEntityMapper mPrefMapper, DBProvider mDbProvider, DataEntityMapper mDataMaper
+            , ListRingToneEntityMapper mListRingToneEntityMapper) {
         this.iPref = iPreference;
         this.mPrefMapper = mPrefMapper;
         this.mDbProvider = mDbProvider;
         this.mDataMaper = mDataMaper;
+        this.mListRingToneEntityMapper = mListRingToneEntityMapper;
     }
 
     @Override
@@ -42,10 +47,10 @@ public class Respository implements IRespository {
     }
 
     @Override
-    public void updateSetting(boolean is24h, boolean isWetMode, String name, String uri) {
+    public void updateSetting(boolean is24h, boolean isWetMode, ListRingToneEntity ringtone) {
         iPref.setAlarm24h(is24h);
         iPref.setWetMode(isWetMode);
-        iPref.setDefaultRingTone(new RingToneData(name, uri));
+        iPref.setListDefaultRingTone(mListRingToneEntityMapper.transform(ringtone));
     }
 
     @Override

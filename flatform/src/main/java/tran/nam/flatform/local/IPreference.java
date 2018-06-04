@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import java.util.Map;
 
+import tran.nam.flatform.model.ListRingTone;
 import tran.nam.flatform.model.RingToneData;
 
 public interface IPreference {
@@ -15,6 +16,6 @@ public interface IPreference {
     boolean isWetMode();
     void setWetMode(boolean isWetMode);
 
-    RingToneData getDefaultRingtone();
-    void setDefaultRingTone(RingToneData defaultRingTone);
+    ListRingTone getListDefaultRingtone();
+    void setListDefaultRingTone(ListRingTone listDefaultRingtone);
 }

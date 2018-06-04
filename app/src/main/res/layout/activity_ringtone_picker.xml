@@ -15,8 +15,8 @@
             type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalStartClick" />
 
         <variable
-            name="ivOptionalEndClick"
-            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnIvOptionalEndClick" />
+            name="tvOptionalEndClick"
+            type="tran.nam.alarmtimer.callback.ToolbarItemClick.OnTvOptionalEndClick"/>
 
     </data>
 
@@ -29,7 +29,7 @@
             android:id="@+id/toolbar"
             layout="@layout/include_toolbar_layout"
             app:ivOptionalStartClick="@{() -> ivOptionalStartClick.onIvOptionalStartClick(toolbarModel.type)}"
-            app:ivOptionalEndClick="@{() -> ivOptionalEndClick.onIvOptionalEndClick(toolbarModel.type)}"
+            app:tvOptionalEndClick="@{() -> tvOptionalEndClick.onTvOptionalEndClick(toolbarModel.type)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -5,22 +5,21 @@ import javax.inject.Singleton;
 
 import tran.nam.alarmtimer.application.model.PreferenceModel;
 import tran.nam.domain.entity.PreferenceEntity;
-import tran.nam.domain.entity.RingToneEntity;
 
 @Singleton
 public class PreferenceMapper {
 
-    private RingToneMapper ringtoneMapper;
+    private ListRingToneMapper ringtoneMapper;
     private PreferenceModel preferenceModel;
 
     @Inject
-    PreferenceMapper(PreferenceModel preferenceModel,RingToneMapper ringtoneMapper) {
+    PreferenceMapper(PreferenceModel preferenceModel, ListRingToneMapper ringtoneMapper) {
         this.preferenceModel = preferenceModel;
         this.ringtoneMapper = ringtoneMapper;
     }
 
     /**
-     * Transform a {@link RingToneEntity} into an {@link PreferenceModel}.
+     * Transform a {@link PreferenceEntity} into an {@link PreferenceModel}.
      *
      * @param data Object to be transformed.
      * @return {@link PreferenceModel}.
@@ -31,7 +30,7 @@ public class PreferenceMapper {
         }
         preferenceModel.is24h = data.is24h;
         preferenceModel.isWetMode = data.isWetMode;
-        preferenceModel.defaultRingtone = ringtoneMapper.transform(data.defaultRingtone);
+        preferenceModel.defaultRingtone = ringtoneMapper.transform(data.listRingToneEntity);
     }
 
 }

@@ -6,16 +6,18 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import tran.nam.alarmtimer.R;
+import tran.nam.alarmtimer.application.model.ListRingToneModel;
 import tran.nam.alarmtimer.application.model.PreferenceModel;
 import tran.nam.alarmtimer.application.model.ToolbarModel;
+import tran.nam.alarmtimer.mapper.ListRingToneMapper;
 import tran.nam.core.model.BaseViewModel;
 import tran.nam.domain.IRespository;
 
 public class RingtoneViewModel extends BaseViewModel {
 
     public ToolbarModel toolbarModel;
-    private PreferenceModel mPref;
-    private IRespository iRespository;
+    private final PreferenceModel mPref;
+    private final IRespository iRespository;
 
     @Inject
     RingtoneViewModel(@NonNull Application application, IRespository iRespository, PreferenceModel mPref) {
@@ -23,18 +25,17 @@ public class RingtoneViewModel extends BaseViewModel {
         this.iRespository = iRespository;
         this.mPref = mPref;
         toolbarModel = new ToolbarModel(true, application.getString(R.string.title_ring_tone), R.drawable.ic_back);
-        toolbarModel.isIvOptionalEnd = false;
-        toolbarModel.srcOptionalEnd = R.drawable.ic_add;
-    }
-
-    public void updateSetting(String name, String uri) {
-        mPref.defaultRingtone.name = name;
-        mPref.defaultRingtone.uri = uri;
-        iRespository.updateSetting(mPref.is24h, mPref.isWetMode, mPref.defaultRingtone.name, mPref.defaultRingtone.uri);
+        toolbarModel.isTextOptionEnd = true;
+        toolbarModel.textOptionEnd = application.getString(R.string.text_done);
     }
 
     public void fromSetting() {
         toolbarModel.hideIvEnd();
+    }
+
+    public void updateSetting(ListRingToneModel listRingToneModel) {
+        mPref.defaultRingtone = listRingToneModel;
+        iRespository.updateSetting(mPref.is24h, mPref.isWetMode, mPref.listRingToneEntity());
     }
 
     @Override

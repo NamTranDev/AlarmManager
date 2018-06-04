@@ -7,10 +7,10 @@ import tran.nam.flatform.local.IPreference;
 
 public class PreferenceEntityMapper {
 
-    private RingToneEntityMapper ringToneEntityMapper;
+    private ListRingToneEntityMapper ringToneEntityMapper;
 
     @Inject
-    PreferenceEntityMapper(RingToneEntityMapper ringToneEntityMapper) {
+    PreferenceEntityMapper(ListRingToneEntityMapper ringToneEntityMapper) {
         this.ringToneEntityMapper = ringToneEntityMapper;
     }
 
@@ -27,7 +27,7 @@ public class PreferenceEntityMapper {
         final PreferenceEntity preferenceEntity = new PreferenceEntity();
         preferenceEntity.is24h = data.isAlarm24h();
         preferenceEntity.isWetMode = data.isWetMode();
-        preferenceEntity.defaultRingtone = ringToneEntityMapper.transform(data.getDefaultRingtone());
+        preferenceEntity.listRingToneEntity = ringToneEntityMapper.transform(data.getListDefaultRingtone());
 
         return preferenceEntity;
     }

@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import tran.nam.alarmtimer.R;
@@ -25,15 +29,23 @@ public class RingToneAdapter extends DataBoundListAdapter<RingToneModel,AdapterR
     @Override
     protected AdapterRingToneBinding createBinding(ViewGroup parent) {
         AdapterRingToneBinding biding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.adapter_ring_tone, parent, false);
-        biding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemRingToneClick != null){
-                    onItemRingToneClick.onItemRingToneClick(biding.getRingTone());
-                }
+        biding.getRoot().setOnClickListener(v -> {
+            if (onItemRingToneClick != null){
+                onItemRingToneClick.onItemRingToneClick(biding.getRingTone(), Objects.requireNonNull(items).indexOf(biding.getRingTone()));
             }
         });
         return biding;
+    }
+
+    public List<RingToneModel> getListChoose(){
+        List<RingToneModel> ringToneModels = new ArrayList<>();
+        if (items != null){
+            for (RingToneModel ringToneModel : items){
+                if (ringToneModel.isChoose)
+                    ringToneModels.add(ringToneModel);
+            }
+        }
+        return ringToneModels;
     }
 
     @Override
@@ -52,6 +64,6 @@ public class RingToneAdapter extends DataBoundListAdapter<RingToneModel,AdapterR
     }
 
     public interface OnItemRingToneClick{
-        void onItemRingToneClick(RingToneModel item);
+        void onItemRingToneClick(RingToneModel item, int position);
     }
 }

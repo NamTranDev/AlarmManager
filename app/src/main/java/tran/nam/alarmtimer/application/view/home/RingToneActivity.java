@@ -3,12 +3,10 @@ package tran.nam.alarmtimer.application.view.home;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 
@@ -23,19 +21,19 @@ import ringtone.util.RingtoneLoaderTask;
 import ringtone.util.RingtoneTypes;
 import tran.nam.alarmtimer.R;
 import tran.nam.alarmtimer.application.NavigatorApp;
+import tran.nam.alarmtimer.application.model.ListRingToneModel;
+import tran.nam.alarmtimer.application.model.RingToneModel;
 import tran.nam.alarmtimer.application.view.adapter.RingToneAdapter;
 import tran.nam.alarmtimer.application.viewmodel.RingtoneViewModel;
 import tran.nam.alarmtimer.callback.ToolbarItemClick;
 import tran.nam.alarmtimer.databinding.ActivityRingtonePickerBinding;
-import tran.nam.alarmtimer.application.model.RingToneModel;
 import tran.nam.core.view.mvvm.BaseActivityMVVM;
 import tran.nam.util.Constant;
 import tran.nam.util.StatusBarUtil;
 
-import static ringtone.util.RingtoneTypes.TYPE_ALARM;
 import static ringtone.util.RingtoneTypes.TYPE_MUSIC;
 
-public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBinding, RingtoneViewModel> implements ToolbarItemClick.OnIvOptionalStartClick, RingtoneLoaderTask.LoadCompleteListener, ToolbarItemClick.OnIvOptionalEndClick, RingToneAdapter.OnItemRingToneClick {
+public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBinding, RingtoneViewModel> implements ToolbarItemClick.OnIvOptionalStartClick, RingtoneLoaderTask.LoadCompleteListener, RingToneAdapter.OnItemRingToneClick, ToolbarItemClick.OnTvOptionalEndClick {
 
     @Inject
     NavigatorApp mNavigatorApp;
@@ -43,13 +41,11 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     @Inject
     RingToneAdapter mAdapter;
 
-    private @RingtoneTypes int mRingtoneTypes = TYPE_MUSIC;
-
-    @Nullable
-    private RingtoneLoaderTask mLoaderTask;
+    private @RingtoneTypes
+    int mRingtoneTypes = TYPE_MUSIC;
 
     private boolean isSetting;
-    private RingToneModel ringTone;
+    private List<RingToneModel> listRingTone = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -66,7 +62,7 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     public void initView(Bundle savedInstanceState) {
         mViewDataBinding.setToolbarModel(mViewModel.toolbarModel);
         mViewDataBinding.setIvOptionalStartClick(this);
-        mViewDataBinding.setIvOptionalEndClick(this);
+        mViewDataBinding.setTvOptionalEndClick(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             isSetting = getIntent().getExtras().getBoolean(Constant.KEY_INTENT.FROM_SETTING);
             if (isSetting)
@@ -74,14 +70,19 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
         }
 
         mAdapter.setOnItemRingToneClick(this);
-        mViewDataBinding.rvRingTone.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mViewDataBinding.rvRingTone.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mViewDataBinding.rvRingTone.setAdapter(mAdapter);
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (getIntent() != null && getIntent().getExtras() != null)
-            ringTone = getIntent().getExtras().getParcelable(Constant.KEY_INTENT.RING_TONE);
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            ListRingToneModel listRingToneModel = getIntent().getExtras().getParcelable(Constant.KEY_INTENT.RING_TONE);
+            if (listRingToneModel != null) {
+                listRingTone = listRingToneModel.ringToneModels;
+            }
+        }
+
         prepareRingtoneList(mRingtoneTypes);
     }
 
@@ -98,7 +99,7 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     @SuppressLint("MissingPermission")
     private void prepareRingtoneList(final int types) {
         mViewDataBinding.viewFlipper.setDisplayedChild(0);
-        mLoaderTask = new RingtoneLoaderTask(this, this);
+        RingtoneLoaderTask mLoaderTask = new RingtoneLoaderTask(this, this);
         //noinspection unchecked
         mLoaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, types);
     }
@@ -108,14 +109,14 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
         mViewDataBinding.viewFlipper.setDisplayedChild(1);
         List<RingToneModel> ringToneModels = new ArrayList<>();
         RingToneModel defaultRingTone = new RingToneModel(getString(tran.nam.flatform.R.string.title_default_list_item), "R.raw.bell");
-        defaultRingTone.isChoose = ringTone != null && defaultRingTone.equals(ringTone);
+        defaultRingTone.isChoose = listRingTone.contains(defaultRingTone);
         ringToneModels.add(defaultRingTone);
-        for(Map.Entry<String, Uri> entry : ringtone.entrySet()) {
+        for (Map.Entry<String, Uri> entry : ringtone.entrySet()) {
             String name = entry.getKey();
             String uri = entry.getValue().toString();
 
-            RingToneModel ringToneModel = new RingToneModel(name,uri);
-            ringToneModel.isChoose = ringTone != null && ringToneModel.equals(ringTone);
+            RingToneModel ringToneModel = new RingToneModel(name, uri);
+            ringToneModel.isChoose = listRingTone.contains(ringToneModel);
             ringToneModels.add(ringToneModel);
         }
 
@@ -123,22 +124,23 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     }
 
     @Override
-    public void onIvOptionalEndClick(int type) {
-        mRingtoneTypes = TYPE_MUSIC;
-        prepareRingtoneList(mRingtoneTypes);
+    public void onItemRingToneClick(RingToneModel item, int position) {
+        item.isChoose = !item.isChoose;
+        mAdapter.notifyItemChanged(position);
     }
 
     @Override
-    public void onItemRingToneClick(RingToneModel item) {
-        if (isSetting){
-            mViewModel.updateSetting(item.name,item.uri);
+    public void onTvOptionalEndClick(int type) {
+        ListRingToneModel listRingToneModel = new ListRingToneModel();
+        listRingToneModel.addData(mAdapter.getListChoose());
+        if (isSetting) {
+            mViewModel.updateSetting(listRingToneModel);
             setResult(RESULT_OK);
-        }else {
+        } else {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constant.KEY_INTENT_RESULT.RING_TONE,item);
-            setResult(RESULT_OK,returnIntent);
+            returnIntent.putExtra(Constant.KEY_INTENT_RESULT.RING_TONE, listRingToneModel);
+            setResult(RESULT_OK, returnIntent);
         }
-
         mNavigatorApp.finish(this);
     }
 }

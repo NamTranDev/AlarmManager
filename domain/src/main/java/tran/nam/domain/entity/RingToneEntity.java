@@ -1,9 +1,5 @@
 package tran.nam.domain.entity;
 
-import android.net.Uri;
-
-import tran.nam.flatform.model.RingToneData;
-
 public class RingToneEntity {
 
     public String name;

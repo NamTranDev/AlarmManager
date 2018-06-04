@@ -8,6 +8,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.TextView;
 
+import tran.nam.alarmtimer.application.model.ListRingToneModel;
 import tran.nam.alarmtimer.application.model.RingToneModel;
 import tran.nam.alarmtimer.application.model.ToolbarModel;
 import tran.nam.alarmtimer.widget.TimePicker;
@@ -29,7 +30,7 @@ public class BidingData {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                toolbarModel.updateWhenTabChangeMain(tabLayout.getContext(),tab.getPosition());
+                toolbarModel.updateWhenTabChangeMain(tabLayout.getContext(), tab.getPosition());
                 if (tabLayout.getContext() instanceof BaseActivityWithFragment) {
                     ((BaseActivityWithFragment) tabLayout.getContext()).mFragmentHelper.showFragment(tab.getPosition());
                 }
@@ -54,14 +55,18 @@ public class BidingData {
     }
 
     @BindingAdapter("nameRingtone")
-    public static void setTextRingtone(TextView view, RingToneModel defaultRingtone){
-        if (defaultRingtone == null)
+    public static void setTextRingtone(TextView view, ListRingToneModel defaultRingtone) {
+        if (defaultRingtone == null || defaultRingtone.ringToneModels == null)
             return;
-        view.setText(defaultRingtone.name);
+        StringBuilder ringtone = new StringBuilder();
+        for (RingToneModel ringToneModel : defaultRingtone.ringToneModels){
+            ringtone.append(ringToneModel.name).append(", ");
+        }
+        view.setText(ringtone.toString().substring(0, ringtone.toString().length() - 2));
     }
 
     @BindingAdapter("select24h")
-    public static void select24h(TimePicker view,boolean is24h){
+    public static void select24h(TimePicker view, boolean is24h) {
         view.setIs24HourView(is24h);
     }
 }

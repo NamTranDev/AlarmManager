@@ -7,10 +7,14 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
+import java.util.Random;
+
 import javax.inject.Inject;
 
 import io.reactivex.observers.DisposableCompletableObserver;
 import tran.nam.alarmtimer.application.model.AlarmModel;
+import tran.nam.alarmtimer.application.model.ListRingToneModel;
+import tran.nam.alarmtimer.application.model.RingToneModel;
 import tran.nam.alarmtimer.controller.AlarmController;
 import tran.nam.alarmtimer.mapper.DataMapper;
 import tran.nam.alarmtimer.util.RingtoneLoop;
@@ -41,26 +45,24 @@ public class AlarmActivityViewModel extends BaseViewModel {
         this.mAlarmController = alarmController;
         mRingtone = new RingtoneLoop(application);
         mVibrator = (Vibrator) application.getSystemService(VIBRATOR_SERVICE);
-        PowerManager powerManager = (PowerManager)application.getSystemService(POWER_SERVICE);
+        PowerManager powerManager = (PowerManager) application.getSystemService(POWER_SERVICE);
         assert powerManager != null;
         mWakeLock = powerManager.newWakeLock(
                 PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
     }
 
-    public AlarmModel setAlarm(AlarmModel alarm,boolean vibrator) {
+    public AlarmModel setAlarm(AlarmModel alarm, boolean vibrator) {
         this.alarm = alarm;
         this.alarm.isHideAmPM = true;
         this.alarm.countdownTimer = String.format("%s:%s", String.valueOf(this.alarm.durationMinute), "00");
-        mRingtone.play(Uri.parse(this.alarm.ringtone.uri));
+        // TODO: 6/1/18 Play random
+        ListRingToneModel listRingToneModel = this.alarm.ringtone;
+        if (listRingToneModel != null && listRingToneModel.ringToneModels != null && listRingToneModel.ringToneModels.size() > 0) {
+            int random = new Random().nextInt(listRingToneModel.ringToneModels.size());
+            RingToneModel ringToneModel = listRingToneModel.ringToneModels.get(random);
+            mRingtone.play(Uri.parse(ringToneModel.uri));
+        }
         createCountDown();
-//        if (vibrator){
-//            mVibrator.vibrate(new long[] { // apply pattern
-//                    0, // millis to wait before turning vibrator on
-//                    500, // millis to keep vibrator on before turning off
-//                    500, // millis to wait before turning back on
-//                    500 // millis to keep on before turning off
-//            }, 2 /* start repeating at this index of the array, after one cycle */);
-//        }
         return this.alarm;
     }
 
@@ -100,7 +102,7 @@ public class AlarmActivityViewModel extends BaseViewModel {
         if (alarm.day.length == 0) {
             alarm.isEnable = false;
             mUpdateAlarmUseCase.execute(new UpdateAlarmResponse(), mapper.getAlarmMapper().convert(alarm));
-        }else {
+        } else {
             mAlarmController.cancelAlarm(alarm);
             mAlarmController.scheduleAlarm(alarm);
             if (onAlarmCallback != null)

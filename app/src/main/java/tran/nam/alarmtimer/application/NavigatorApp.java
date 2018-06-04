@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import tran.nam.alarmtimer.application.model.AlarmModel;
+import tran.nam.alarmtimer.application.model.ListRingToneModel;
 import tran.nam.alarmtimer.application.model.RingToneModel;
 import tran.nam.alarmtimer.application.view.alarm.AddAlarmActivity;
 import tran.nam.alarmtimer.application.view.alarm.AlarmActivity;
@@ -53,7 +54,7 @@ public class NavigatorApp {
         animationTransition(activity);
     }
 
-    public void goToRingTonePick(BaseActivity activity, boolean isSetting, RingToneModel ringToneModel) {
+    public void goToRingTonePick(BaseActivity activity, boolean isSetting, ListRingToneModel ringToneModel) {
         Intent intent = new Intent(activity, RingToneActivity.class);
         intent.putExtra(Constant.KEY_INTENT.FROM_SETTING,isSetting);
         intent.putExtra(Constant.KEY_INTENT.RING_TONE,ringToneModel);

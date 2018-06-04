@@ -3,8 +3,6 @@ package tran.nam.flatform.local;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -12,8 +10,7 @@ import com.google.gson.Gson;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import tran.nam.flatform.R;
-import tran.nam.flatform.model.RingToneData;
+import tran.nam.flatform.model.ListRingTone;
 
 import static tran.nam.util.Constant.EMPTY;
 
@@ -63,18 +60,18 @@ public class Preference implements IPreference {
     }
 
     @Override
-    public RingToneData getDefaultRingtone() {
+    public ListRingTone getListDefaultRingtone() {
         String ringtoneString = mPref.getString(ALARM_DEFAULT_RINGTONE, EMPTY);
         if (!TextUtils.isDigitsOnly(ringtoneString)) {
-            return new Gson().fromJson(ringtoneString, RingToneData.class);
+            return new Gson().fromJson(ringtoneString, ListRingTone.class);
         }
-        return new RingToneData(mApp.getString(R.string.title_default_list_item), "R.raw.bell");
+        return new ListRingTone().getDefault(mApp);
     }
 
     @Override
-    public void setDefaultRingTone(RingToneData defaultRingTone) {
+    public void setListDefaultRingTone(ListRingTone listDefaultRingtone) {
         final SharedPreferences.Editor editor = mPref.edit();
-        editor.putString(ALARM_DEFAULT_RINGTONE, new Gson().toJson(defaultRingTone));
+        editor.putString(ALARM_DEFAULT_RINGTONE, new Gson().toJson(listDefaultRingtone));
         editor.apply();
     }
 }
