@@ -14,6 +14,7 @@ public class PreferenceModel extends BaseObservable{
    public boolean is24h;
    public boolean isWetMode;
    public ListRingToneModel defaultRingtone;
+   public ListRingToneModel defaultRingtoneMusic;
 
    private ListRingToneMapper listRingToneMapper;
 
@@ -24,5 +25,13 @@ public class PreferenceModel extends BaseObservable{
 
     public ListRingToneEntity listRingToneEntity(){
         return listRingToneMapper.convert(defaultRingtone);
+    }
+
+    public ListRingToneEntity listRingToneMusicEntity(){
+        return listRingToneMapper.convert(defaultRingtoneMusic);
+    }
+
+    public void updateWetMode() {
+        notifyChange();
     }
 }

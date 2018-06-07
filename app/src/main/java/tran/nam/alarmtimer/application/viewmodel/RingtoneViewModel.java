@@ -10,6 +10,7 @@ import tran.nam.alarmtimer.application.model.ListRingToneModel;
 import tran.nam.alarmtimer.application.model.PreferenceModel;
 import tran.nam.alarmtimer.application.model.ToolbarModel;
 import tran.nam.alarmtimer.mapper.ListRingToneMapper;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.core.model.BaseViewModel;
 import tran.nam.domain.IRespository;
 
@@ -33,9 +34,17 @@ public class RingtoneViewModel extends BaseViewModel {
         toolbarModel.hideIvEnd();
     }
 
-    public void updateSetting(ListRingToneModel listRingToneModel) {
-        mPref.defaultRingtone = listRingToneModel;
-        iRespository.updateSetting(mPref.is24h, mPref.isWetMode, mPref.listRingToneEntity());
+    public void updateSetting(ListRingToneModel listRingToneModel,@RingToneType int typeRingTone) {
+        switch (typeRingTone) {
+            case RingToneType.MUSIC:
+                mPref.defaultRingtoneMusic = listRingToneModel;
+                break;
+            case RingToneType.TONE:
+                mPref.defaultRingtone = listRingToneModel;
+                break;
+        }
+
+        iRespository.updateSetting(mPref.is24h, mPref.isWetMode, mPref.listRingToneEntity(),mPref.listRingToneMusicEntity());
     }
 
     @Override

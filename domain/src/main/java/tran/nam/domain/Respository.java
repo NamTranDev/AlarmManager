@@ -47,10 +47,11 @@ public class Respository implements IRespository {
     }
 
     @Override
-    public void updateSetting(boolean is24h, boolean isWetMode, ListRingToneEntity ringtone) {
+    public void updateSetting(boolean is24h, boolean isWetMode, ListRingToneEntity ringtone, ListRingToneEntity ringtoneMusic) {
         iPref.setAlarm24h(is24h);
         iPref.setWetMode(isWetMode);
         iPref.setListDefaultRingTone(mListRingToneEntityMapper.transform(ringtone));
+        iPref.setListDefaultRingToneMusic(mListRingToneEntityMapper.transform(ringtoneMusic));
     }
 
     @Override

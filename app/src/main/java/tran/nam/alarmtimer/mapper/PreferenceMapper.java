@@ -31,6 +31,7 @@ public class PreferenceMapper {
         preferenceModel.is24h = data.is24h;
         preferenceModel.isWetMode = data.isWetMode;
         preferenceModel.defaultRingtone = ringtoneMapper.transform(data.listRingToneEntity);
+        preferenceModel.defaultRingtoneMusic = ringtoneMapper.transform(data.listRingToneMusicEntity);
     }
 
 }

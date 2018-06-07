@@ -30,8 +30,11 @@ public class AlarmModel extends BaseObservable implements Parcelable {
     public int minute;
     public int[] day;
     public ListRingToneModel ringtone;
+    public ListRingToneModel ringtoneMusic;
     public long durationMinute;
     public long durationSecond;
+    public long durationMusicMinute;
+    public long durationMusicSecond;
     public boolean isWetMode;
     public boolean isEnable;
     public boolean is24h;
@@ -41,14 +44,18 @@ public class AlarmModel extends BaseObservable implements Parcelable {
     public AlarmModel() {
     }
 
-    public AlarmModel(String lable, int hour, int minute, int[] day, ListRingToneModel ringtone, long durationMinute, long durationSecond, boolean isWetMode, boolean isEnable) {
+    public AlarmModel(String lable, int hour, int minute, int[] day, ListRingToneModel ringtone, long durationMinute, long durationSecond
+            , ListRingToneModel ringtoneMusic, long durationMusicMinute, long durationMusicSecond, boolean isWetMode, boolean isEnable) {
         this.lable = lable;
         this.hour = hour;
         this.minute = minute;
         this.day = day;
         this.ringtone = ringtone;
+        this.ringtoneMusic = ringtoneMusic;
         this.durationMinute = durationMinute;
         this.durationSecond = durationSecond;
+        this.durationMusicMinute = durationMusicMinute;
+        this.durationMusicSecond = durationMusicSecond;
         this.isWetMode = isWetMode;
         this.isEnable = isEnable;
     }
@@ -62,6 +69,12 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         if (durationMinute == 0)
             return String.format("%s sec", durationSecond);
         return String.format("%s min %s sec", durationMinute, durationSecond);
+    }
+
+    public String getDurationMusic() {
+        if (durationMusicMinute == 0)
+            return String.format("%s sec", durationMusicSecond);
+        return String.format("%s min %s sec", durationMusicMinute, durationMusicSecond);
     }
 
     public String getTime() {
@@ -230,8 +243,11 @@ public class AlarmModel extends BaseObservable implements Parcelable {
                 ", minute=" + minute +
                 ", day=" + Arrays.toString(day) +
                 ", ringtone=" + ringtone.toString() +
+                ", ringtoneMusic=" + ringtoneMusic.toString() +
                 ", durationMinute=" + durationMinute +
                 ", durationSecond=" + durationSecond +
+                ", durationMusicMinute=" + durationMusicMinute +
+                ", durationMusicSecond=" + durationMusicSecond +
                 ", isWetMode=" + isWetMode +
                 ", isEnable=" + isEnable +
                 '}';
@@ -250,8 +266,11 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         dest.writeInt(this.minute);
         dest.writeIntArray(this.day);
         dest.writeParcelable(this.ringtone, flags);
+        dest.writeParcelable(this.ringtoneMusic, flags);
         dest.writeLong(this.durationMinute);
         dest.writeLong(this.durationSecond);
+        dest.writeLong(this.durationMusicMinute);
+        dest.writeLong(this.durationMusicSecond);
         dest.writeByte(this.isWetMode ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isEnable ? (byte) 1 : (byte) 0);
         dest.writeByte(this.is24h ? (byte) 1 : (byte) 0);
@@ -266,8 +285,11 @@ public class AlarmModel extends BaseObservable implements Parcelable {
         this.minute = in.readInt();
         this.day = in.createIntArray();
         this.ringtone = in.readParcelable(ListRingToneModel.class.getClassLoader());
+        this.ringtoneMusic = in.readParcelable(ListRingToneModel.class.getClassLoader());
         this.durationMinute = in.readLong();
         this.durationSecond = in.readLong();
+        this.durationMusicMinute = in.readLong();
+        this.durationMusicSecond = in.readLong();
         this.isWetMode = in.readByte() != 0;
         this.isEnable = in.readByte() != 0;
         this.is24h = in.readByte() != 0;

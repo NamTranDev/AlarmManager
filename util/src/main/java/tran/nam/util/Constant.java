@@ -30,12 +30,14 @@ public interface Constant {
 
     interface REQUEST_CODE{
         int PICK_RING_TONE = 1;
-        int SETTING_HOME = 2;
+        int PICK_RING_MUSIC = 2;
+        int SETTING_HOME = 3;
     }
 
     interface KEY_INTENT{
         String FROM_SETTING = "From Setting";
         String RING_TONE = "Ring tone";
+        String RING_TONE_TYPE = "Ring tone Type";
         String ALARM_DATA = "Alarm Data";
         String IS_PREVIEW_ALARM = "Is Preview Alarm";
     }
@@ -49,6 +51,7 @@ public interface Constant {
         String DIALOG_ALARM_DATA = "Dialog Alarm Data";
         String DIALOG_MINUTE = "Dialog Minute";
         String DIALOG_SECOND = "Dialog Second";
+        String DIALOG_TYPE = "Dialog type";
         String ALARM = "Alarm";
     }
 }

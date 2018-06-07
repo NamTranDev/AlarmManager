@@ -106,4 +106,8 @@ public class HomeFragment extends BaseFragmentMVVM<FragmentHomeBinding, HomeView
             ((MainActivity)getBaseActivity()).updateAlarm();
         }
     }
+
+    public void updateWetMode() {
+        mViewModel.mPreferenceModel.updateWetMode();
+    }
 }

@@ -19,6 +19,7 @@ import java.util.Objects;
 import tran.nam.alarmtimer.R;
 import tran.nam.alarmtimer.callback.DialogItemClick;
 import tran.nam.alarmtimer.databinding.DialogMinuteAlarmBinding;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.util.Constant;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -26,13 +27,15 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class DurationAlarmDialog extends DialogFragment implements DialogItemClick {
 
     private DialogMinuteAlarmBinding biding;
-    private onDurationAlarmCallback onDurationAlarmCallback;
+    private OnDurationAlarmCallback OnDurationAlarmCallback;
+    private @RingToneType int type;
 
-    public static DurationAlarmDialog getInstanxe(int durationMinute, int durationSecond) {
+    public static DurationAlarmDialog getInstanxe(@RingToneType int type, int durationMinute, int durationSecond) {
         DurationAlarmDialog dialog = new DurationAlarmDialog();
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.KEY_DIALOG.DIALOG_MINUTE,durationMinute);
         bundle.putInt(Constant.KEY_DIALOG.DIALOG_SECOND,durationSecond);
+        bundle.putInt(Constant.KEY_DIALOG.DIALOG_TYPE,type);
         dialog.setArguments(bundle);
         return dialog;
     }
@@ -55,8 +58,17 @@ public class DurationAlarmDialog extends DialogFragment implements DialogItemCli
         if (getArguments() != null){
             int durationMinute = getArguments().getInt(Constant.KEY_DIALOG.DIALOG_MINUTE);
             int durationSecond = getArguments().getInt(Constant.KEY_DIALOG.DIALOG_SECOND);
+            type = getArguments().getInt(Constant.KEY_DIALOG.DIALOG_TYPE);
             biding.durationPicker.setCurrentSecond(durationSecond);
             biding.durationPicker.setCurrentMinute(durationMinute);
+            switch (type) {
+                case RingToneType.MUSIC:
+                    biding.durationPicker.setMaxMinute(59);
+                    break;
+                case RingToneType.TONE:
+                    biding.durationPicker.setMaxMinute(9);
+                    break;
+            }
         }
         return biding.getRoot();
     }
@@ -87,8 +99,8 @@ public class DurationAlarmDialog extends DialogFragment implements DialogItemCli
         super.onResume();
     }
 
-    public void setOnDurationAlarmCallback(DurationAlarmDialog.onDurationAlarmCallback onDurationAlarmCallback) {
-        this.onDurationAlarmCallback = onDurationAlarmCallback;
+    public void setOnDurationAlarmCallback(OnDurationAlarmCallback OnDurationAlarmCallback) {
+        this.OnDurationAlarmCallback = OnDurationAlarmCallback;
     }
 
     protected float maxHeight() {
@@ -101,8 +113,8 @@ public class DurationAlarmDialog extends DialogFragment implements DialogItemCli
 
     @Override
     public void onOkClick() {
-        if (onDurationAlarmCallback != null)
-            onDurationAlarmCallback.onDurationAlarmCallback(biding.durationPicker.getCurrentMinute(),biding.durationPicker.getCurrentSeconds());
+        if (OnDurationAlarmCallback != null)
+            OnDurationAlarmCallback.onDurationAlarmCallback(type,biding.durationPicker.getCurrentMinute(),biding.durationPicker.getCurrentSeconds());
         dismiss();
     }
 
@@ -111,7 +123,7 @@ public class DurationAlarmDialog extends DialogFragment implements DialogItemCli
         dismiss();
     }
 
-    public interface onDurationAlarmCallback{
-        void onDurationAlarmCallback(int durationMinute,int durationSecond);
+    public interface OnDurationAlarmCallback {
+        void onDurationAlarmCallback(@RingToneType int type,int durationMinute, int durationSecond);
     }
 }

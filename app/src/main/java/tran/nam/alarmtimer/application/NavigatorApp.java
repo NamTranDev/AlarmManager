@@ -17,8 +17,11 @@ import tran.nam.alarmtimer.application.view.main.MainActivity;
 import tran.nam.alarmtimer.application.view.home.RingToneActivity;
 import tran.nam.alarmtimer.application.view.home.SettingHomeActivity;
 import tran.nam.alarmtimer.application.view.home.SupportHomeActivity;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.core.view.BaseActivity;
 import tran.nam.util.Constant;
+
+import static tran.nam.alarmtimer.type.RingToneType.TONE;
 
 /**
  * Provides methods to navigate to the different activities in the application.
@@ -54,11 +57,13 @@ public class NavigatorApp {
         animationTransition(activity);
     }
 
-    public void goToRingTonePick(BaseActivity activity, boolean isSetting, ListRingToneModel ringToneModel) {
+    public void goToRingTonePick(BaseActivity activity, boolean isSetting,@RingToneType int type, ListRingToneModel ringToneModel) {
         Intent intent = new Intent(activity, RingToneActivity.class);
         intent.putExtra(Constant.KEY_INTENT.FROM_SETTING,isSetting);
         intent.putExtra(Constant.KEY_INTENT.RING_TONE,ringToneModel);
-        activity.startActivityForResult(intent,Constant.REQUEST_CODE.PICK_RING_TONE);
+        intent.putExtra(Constant.KEY_INTENT.RING_TONE_TYPE,type);
+        activity.startActivityForResult(intent,type == TONE ? Constant.REQUEST_CODE.PICK_RING_TONE : Constant.REQUEST_CODE.PICK_RING_MUSIC);
+
         animationTransition(activity);
     }
 

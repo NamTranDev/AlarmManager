@@ -28,7 +28,8 @@ import static android.content.Context.VIBRATOR_SERVICE;
 public class AlarmActivityViewModel extends BaseViewModel {
 
     private AlarmModel alarm;
-    private CountDownTimer mTimer;
+    private CountDownTimer mTimerSound;
+    private CountDownTimer mTimerMusic;
     private OnAlarmCallback onAlarmCallback;
     private RingtoneLoop mRingtone;
     private UpdateAlarmUseCase mUpdateAlarmUseCase;
@@ -36,6 +37,9 @@ public class AlarmActivityViewModel extends BaseViewModel {
     private AlarmController mAlarmController;
     private Vibrator mVibrator;
     private PowerManager.WakeLock mWakeLock;
+    private RingToneModel ringMusic;
+    private boolean isMusic = false;
+    private CountDownTimer countDownSound;
 
     @Inject
     AlarmActivityViewModel(@NonNull Application application, UpdateAlarmUseCase mUpdateAlarmUseCase, DataMapper mapper, AlarmController alarmController) {
@@ -62,7 +66,12 @@ public class AlarmActivityViewModel extends BaseViewModel {
             RingToneModel ringToneModel = listRingToneModel.ringToneModels.get(random);
             mRingtone.play(Uri.parse(ringToneModel.uri));
         }
-        createCountDown();
+        createCountDownSound();
+        ListRingToneModel listRingToneMusicModel = this.alarm.ringtoneMusic;
+        if (listRingToneMusicModel != null && listRingToneMusicModel.ringToneModels != null && listRingToneMusicModel.ringToneModels.size() > 0) {
+            int random = new Random().nextInt(listRingToneMusicModel.ringToneModels.size());
+            ringMusic = listRingToneMusicModel.ringToneModels.get(random);
+        }
         return this.alarm;
     }
 
@@ -70,11 +79,34 @@ public class AlarmActivityViewModel extends BaseViewModel {
         this.onAlarmCallback = onAlarmCallback;
     }
 
-    private void createCountDown() {
-        mTimer = new CountDownTimer(alarm.durationMinute * 60 * 1000 + alarm.durationSecond * 1000, 1000) {
+    private void createCountDownSound() {
+        long timeSound = alarm.durationMinute * 60 * 1000 + alarm.durationSecond * 1000;
+        Logger.debug("Time Sound : " + timeSound);
+        long timeMusic = alarm.durationMusicMinute * 60 * 1000 + alarm.durationMusicSecond * 1000;
+        Logger.debug("Time Music : " + timeMusic);
+        countDownSound = new CountDownTimer(timeSound,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                isMusic = true;
+            }
+        };
+        countDownSound.start();
+        mTimerSound = new CountDownTimer(
+                timeSound + timeMusic, 1000) {
             @Override
             public void onTick(long l) {
+                Logger.debug("Time : " + l);
                 alarm.setCountdownTimer(l);
+                if (isMusic && ringMusic != null){
+                    isMusic = false;
+                    mRingtone.stop();
+                    mRingtone.play(Uri.parse(ringMusic.uri));
+                }
             }
 
             @Override
@@ -83,13 +115,15 @@ public class AlarmActivityViewModel extends BaseViewModel {
                     onAlarmCallback.onFinishCountDown();
             }
         };
-        mTimer.start();
+        mTimerSound.start();
     }
 
     @Override
     public void detach() {
-        if (mTimer != null)
-            mTimer.cancel();
+        if (mTimerSound != null)
+            mTimerSound.cancel();
+        if (countDownSound != null)
+            countDownSound.cancel();
         if (mRingtone != null)
             mRingtone.stop();
         if (mVibrator != null) {

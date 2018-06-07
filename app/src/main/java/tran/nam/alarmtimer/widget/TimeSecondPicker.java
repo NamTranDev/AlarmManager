@@ -151,4 +151,8 @@ public class TimeSecondPicker extends FrameLayout {
         mSecondPicker.setValue(mCurrentSeconds);
         mOnTimeChangedListener.onTimeChanged(this, getCurrentMinute(), getCurrentSeconds());
     }
+
+    public void setMaxMinute(int minute){
+        mMinutePicker.setMaxValue(minute);
+    }
 }

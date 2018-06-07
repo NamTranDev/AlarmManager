@@ -28,6 +28,7 @@ public class PreferenceEntityMapper {
         preferenceEntity.is24h = data.isAlarm24h();
         preferenceEntity.isWetMode = data.isWetMode();
         preferenceEntity.listRingToneEntity = ringToneEntityMapper.transform(data.getListDefaultRingtone());
+        preferenceEntity.listRingToneMusicEntity = ringToneEntityMapper.transform(data.getListDefaultRingtoneMusic());
 
         return preferenceEntity;
     }

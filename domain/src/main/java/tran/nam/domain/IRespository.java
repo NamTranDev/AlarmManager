@@ -16,7 +16,7 @@ public interface IRespository {
 
     PreferenceEntity getSetting();
 
-    void updateSetting(boolean is24h, boolean isWetMode, ListRingToneEntity ringtone);
+    void updateSetting(boolean is24h, boolean isWetMode, ListRingToneEntity ringtone, ListRingToneEntity ringtoneMusic);
 
     Flowable<List<AlarmEntity>> fetchAlarm(int isWetMode);
 

@@ -18,4 +18,7 @@ public interface IPreference {
 
     ListRingTone getListDefaultRingtone();
     void setListDefaultRingTone(ListRingTone listDefaultRingtone);
+
+    ListRingTone getListDefaultRingtoneMusic();
+    void setListDefaultRingToneMusic(ListRingTone listDefaultRingtoneMusic);
 }

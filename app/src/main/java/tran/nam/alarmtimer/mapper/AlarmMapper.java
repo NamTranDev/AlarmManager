@@ -37,8 +37,11 @@ public class AlarmMapper {
         alarmModel.minute = data.minute;
         alarmModel.day = data.day;
         alarmModel.ringtone = ringtoneMapper.transform(data.listRingToneEntity);
+        alarmModel.ringtoneMusic = ringtoneMapper.transform(data.listRingToneMusicEntity);
         alarmModel.durationMinute = data.durationMinute;
         alarmModel.durationSecond = data.durationSecond;
+        alarmModel.durationMusicMinute = data.durationMusicMinute;
+        alarmModel.durationMusicSecond = data.durationMusicSecond;
         alarmModel.isEnable = data.isEnable;
         alarmModel.isWetMode = data.isWetMode;
 
@@ -67,7 +70,8 @@ public class AlarmMapper {
     }
 
     public AlarmEntity convert(AlarmModel alarmModel) {
-        return new AlarmEntity(alarmModel.id,alarmModel.lable, alarmModel.hour, alarmModel.minute, alarmModel.day, ringtoneMapper.convert(alarmModel.ringtone)
-                , alarmModel.durationMinute,alarmModel.durationSecond, alarmModel.isWetMode, alarmModel.isEnable);
+        return new AlarmEntity(alarmModel.id, alarmModel.lable, alarmModel.hour, alarmModel.minute, alarmModel.day, ringtoneMapper.convert(alarmModel.ringtone)
+                , alarmModel.durationMinute, alarmModel.durationSecond, ringtoneMapper.convert(alarmModel.ringtoneMusic)
+                , alarmModel.durationMusicMinute, alarmModel.durationMusicSecond, alarmModel.isWetMode, alarmModel.isEnable);
     }
 }

@@ -71,7 +71,11 @@ public class HomeViewModel extends BaseViewModel {
     }
 
     public void updateTime() {
-        timeHandler.postDelayed(runnable, 1000);
+        try {
+            timeHandler.postDelayed(runnable, 1000);
+        }catch (Exception e){
+            Logger.debug(e);
+        }
     }
 
     public void cancelTime() {
@@ -132,7 +136,7 @@ public class HomeViewModel extends BaseViewModel {
 
     public void onCheckWetMode(boolean isChecked) {
         mPreferenceModel.isWetMode = isChecked;
-        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.listRingToneEntity());
+        iRespository.updateSetting(mPreferenceModel.is24h, mPreferenceModel.isWetMode, mPreferenceModel.listRingToneEntity(),mPreferenceModel.listRingToneMusicEntity());
         mGetListAlarmUseCase.execute(new GetListAlarm(), 0);
     }
 

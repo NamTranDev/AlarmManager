@@ -146,6 +146,10 @@ public class MainActivity extends BaseActivityWithFragmentMVVM<ActivityMainBindi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == Constant.REQUEST_CODE.SETTING_HOME) {
             if (resultCode == RESULT_OK) {
+                BaseFragment fragment = mFragmentHelper.getCurrentFragment();
+                if (fragment != null && fragment instanceof HomeFragment){
+                    ((HomeFragment)fragment).updateWetMode();
+                }
                 alarmFragment.initData(null);
             }
         }

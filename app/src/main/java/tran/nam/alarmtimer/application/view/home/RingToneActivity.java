@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import tran.nam.alarmtimer.application.view.adapter.RingToneAdapter;
 import tran.nam.alarmtimer.application.viewmodel.RingtoneViewModel;
 import tran.nam.alarmtimer.callback.ToolbarItemClick;
 import tran.nam.alarmtimer.databinding.ActivityRingtonePickerBinding;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.core.view.mvvm.BaseActivityMVVM;
 import tran.nam.util.Constant;
 import tran.nam.util.StatusBarUtil;
@@ -43,6 +45,8 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
 
     private @RingtoneTypes
     int mRingtoneTypes = TYPE_MUSIC;
+
+    @RingToneType int typeRingTone;
 
     private boolean isSetting;
     private List<RingToneModel> listRingTone = new ArrayList<>();
@@ -65,6 +69,7 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
         mViewDataBinding.setTvOptionalEndClick(this);
         if (getIntent() != null && getIntent().getExtras() != null) {
             isSetting = getIntent().getExtras().getBoolean(Constant.KEY_INTENT.FROM_SETTING);
+            typeRingTone = getIntent().getExtras().getInt(Constant.KEY_INTENT.RING_TONE_TYPE);
             if (isSetting)
                 mViewModel.fromSetting();
         }
@@ -133,8 +138,12 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     public void onTvOptionalEndClick(int type) {
         ListRingToneModel listRingToneModel = new ListRingToneModel();
         listRingToneModel.addData(mAdapter.getListChoose());
+        if (listRingToneModel.ringToneModels.size() == 0){
+            Toast.makeText(this,"Please Choose Ring",Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (isSetting) {
-            mViewModel.updateSetting(listRingToneModel);
+            mViewModel.updateSetting(listRingToneModel,typeRingTone);
             setResult(RESULT_OK);
         } else {
             Intent returnIntent = new Intent();

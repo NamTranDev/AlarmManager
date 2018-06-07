@@ -13,9 +13,13 @@ import tran.nam.alarmtimer.application.NavigatorApp;
 import tran.nam.alarmtimer.application.viewmodel.SettingHomeViewModel;
 import tran.nam.alarmtimer.callback.SettingHomeItemClick;
 import tran.nam.alarmtimer.databinding.ActivitySettingHomeBinding;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.core.view.mvvm.BaseActivityMVVM;
 import tran.nam.util.Constant;
 import tran.nam.util.StatusBarUtil;
+
+import static tran.nam.alarmtimer.type.RingToneType.MUSIC;
+import static tran.nam.alarmtimer.type.RingToneType.TONE;
 
 public class SettingHomeActivity extends BaseActivityMVVM<ActivitySettingHomeBinding, SettingHomeViewModel> implements SettingHomeItemClick, SettingHomeViewModel.onLoadingDialog {
 
@@ -56,13 +60,23 @@ public class SettingHomeActivity extends BaseActivityMVVM<ActivitySettingHomeBin
 
     @Override
     public void onSongItemClick() {
-        mNavigatorApp.goToRingTonePick(this,true,mViewModel.mPreferenceModel.defaultRingtone);
+        mNavigatorApp.goToRingTonePick(this,true, TONE,mViewModel.mPreferenceModel.defaultRingtone);
+    }
+
+    @Override
+    public void onSongItemMusicClick() {
+        mNavigatorApp.goToRingTonePick(this,true, MUSIC,mViewModel.mPreferenceModel.defaultRingtoneMusic);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case Constant.REQUEST_CODE.PICK_RING_TONE:
+                if (resultCode == RESULT_OK){
+                    mViewModel.mPreferenceModel.notifyChange();
+                }
+                break;
+            case Constant.REQUEST_CODE.PICK_RING_MUSIC:
                 if (resultCode == RESULT_OK){
                     mViewModel.mPreferenceModel.notifyChange();
                 }

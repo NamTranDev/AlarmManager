@@ -22,8 +22,6 @@ import tran.nam.domain.interactor.SaveAlarmUseCase;
 import tran.nam.domain.interactor.UpdateAlarmUseCase;
 import tran.nam.util.Logger;
 
-import static tran.nam.util.Constant.EMPTY;
-
 public class AddAlarmViewModel extends BaseViewModel {
 
     public ToolbarModel toolbarModel;
@@ -34,8 +32,6 @@ public class AddAlarmViewModel extends BaseViewModel {
     private PreferenceModel mPreferenceModel;
     private AlarmController mAlarmController;
     private OnAddOrUpdateAlarmCallBack onAddOrUpdateAlarmCallBack;
-
-    private MutableLiveData<Resource<Boolean>> results = new MutableLiveData<>();
 
     @Inject
     AddAlarmViewModel(@NonNull Application application, AlarmController alarmController, SaveAlarmUseCase mSaveAlarmUseCase, UpdateAlarmUseCase mUpdateAlarmUseCase, PreferenceModel mPreferenceModel, DataMapper dataMapper) {
@@ -51,7 +47,7 @@ public class AddAlarmViewModel extends BaseViewModel {
         Calendar rightNow = Calendar.getInstance();
         int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
         int currentMinute = rightNow.get(Calendar.MINUTE);
-        alarmModel = new AlarmModel("Bell", currentHour, currentMinute, new int[]{2,3,4,5,6}, this.mPreferenceModel.defaultRingtone, 0,3, this.mPreferenceModel.isWetMode, true);
+        alarmModel = new AlarmModel("Bell", currentHour, currentMinute, new int[]{2, 3, 4, 5, 6}, this.mPreferenceModel.defaultRingtone, 0, 3, this.mPreferenceModel.defaultRingtoneMusic, 0, 3, this.mPreferenceModel.isWetMode, true);
         alarmModel.is24h = this.mPreferenceModel.is24h;
     }
 
@@ -75,10 +71,10 @@ public class AddAlarmViewModel extends BaseViewModel {
         mSaveAlarmUseCase.execute(new SaveAlarmResponse(), dataMapper.getAlarmMapper().convert(alarmModel));
     }
 
-    public void updateAlarm(){
+    public void updateAlarm() {
         mAlarmController.cancelAlarm(alarmModel);
         alarmModel.isEnable = true;
-        mUpdateAlarmUseCase.execute(new UpdateAlarmResponse(),dataMapper.getAlarmMapper().convert(alarmModel));
+        mUpdateAlarmUseCase.execute(new UpdateAlarmResponse(), dataMapper.getAlarmMapper().convert(alarmModel));
     }
 
     private final class SaveAlarmResponse extends DisposableSubscriber<Long> {
@@ -121,7 +117,7 @@ public class AddAlarmViewModel extends BaseViewModel {
         }
     }
 
-    public interface OnAddOrUpdateAlarmCallBack{
+    public interface OnAddOrUpdateAlarmCallBack {
         void onFinish();
     }
 }

@@ -24,8 +24,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import tran.nam.domain.entity.AlarmEntity;
-import tran.nam.domain.entity.RingToneEntity;
 import tran.nam.flatform.model.AlarmData;
+import tran.nam.flatform.model.ListRingTone;
 import tran.nam.util.Checker;
 
 /**
@@ -59,8 +59,11 @@ public class AlarmEntityDataMapper {
         alarmEntity.minute = data.minute;
         alarmEntity.day = data.getDate();
         alarmEntity.listRingToneEntity = ringToneEntityMapper.transform(data.ringToneData());
+        alarmEntity.listRingToneMusicEntity = ringToneEntityMapper.transform(data.ringToneMusicData());
         alarmEntity.durationMinute = data.durationMinute;
         alarmEntity.durationSecond = data.durationSecond;
+        alarmEntity.durationMusicMinute = data.durationMusicMinute;
+        alarmEntity.durationMusicSecond = data.durationMusicSecond;
         alarmEntity.isEnable = data.isEnable;
         alarmEntity.isWetMode = data.isWetMode;
 
@@ -88,8 +91,10 @@ public class AlarmEntityDataMapper {
         return listAlarm;
     }
 
-    public AlarmData convert(AlarmEntity alarmEntity){
-        return new AlarmData(alarmEntity.id,alarmEntity.lable,alarmEntity.hour,alarmEntity.minute, Arrays.toString(alarmEntity.day)
-                ,new Gson().toJson(alarmEntity.listRingToneEntity, RingToneEntity.class),alarmEntity.durationMinute,alarmEntity.durationSecond,alarmEntity.isWetMode,alarmEntity.isEnable);
+    public AlarmData convert(AlarmEntity alarmEntity) {
+        return new AlarmData(alarmEntity.id, alarmEntity.lable, alarmEntity.hour, alarmEntity.minute, Arrays.toString(alarmEntity.day)
+                , new Gson().toJson(ringToneEntityMapper.transform(alarmEntity.listRingToneEntity), ListRingTone.class), alarmEntity.durationMinute, alarmEntity.durationSecond
+                , new Gson().toJson(ringToneEntityMapper.transform(alarmEntity.listRingToneMusicEntity), ListRingTone.class), alarmEntity.durationMusicMinute, alarmEntity.durationMusicSecond
+                , alarmEntity.isWetMode, alarmEntity.isEnable);
     }
 }

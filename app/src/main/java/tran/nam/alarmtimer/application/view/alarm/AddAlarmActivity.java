@@ -22,6 +22,7 @@ import tran.nam.alarmtimer.application.viewmodel.AddAlarmViewModel;
 import tran.nam.alarmtimer.callback.AddAlarmItemClick;
 import tran.nam.alarmtimer.callback.ToolbarItemClick;
 import tran.nam.alarmtimer.databinding.ActivityAddAlarmBinding;
+import tran.nam.alarmtimer.type.RingToneType;
 import tran.nam.alarmtimer.widget.OnWeekdaysChangeListener;
 import tran.nam.alarmtimer.widget.TimePicker;
 import tran.nam.core.view.mvvm.BaseActivityMVVM;
@@ -29,8 +30,12 @@ import tran.nam.util.Constant;
 import tran.nam.util.Logger;
 import tran.nam.util.StatusBarUtil;
 
+import static tran.nam.alarmtimer.type.RingToneType.MUSIC;
+import static tran.nam.alarmtimer.type.RingToneType.TONE;
+
 @SuppressWarnings("unchecked")
-public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, AddAlarmViewModel> implements ToolbarItemClick.OnTvOptionalStartClick, ToolbarItemClick.OnTvOptionalEndClick, AddAlarmItemClick, NameAlarmDialog.OnNameAlarmCallback, DurationAlarmDialog.onDurationAlarmCallback, TimePicker.OnTimeChangedListener, OnWeekdaysChangeListener, AddAlarmViewModel.OnAddOrUpdateAlarmCallBack {
+public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, AddAlarmViewModel> implements ToolbarItemClick.OnTvOptionalStartClick
+        , ToolbarItemClick.OnTvOptionalEndClick, AddAlarmItemClick, NameAlarmDialog.OnNameAlarmCallback, DurationAlarmDialog.OnDurationAlarmCallback, TimePicker.OnTimeChangedListener, OnWeekdaysChangeListener, AddAlarmViewModel.OnAddOrUpdateAlarmCallBack {
 
     @Inject
     NavigatorApp mNavigatorApp;
@@ -106,14 +111,26 @@ public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, 
 
     @Override
     public void onSongItemClick() {
-        mNavigatorApp.goToRingTonePick(this, false, mViewModel.alarmModel.ringtone);
+        mNavigatorApp.goToRingTonePick(this, false, TONE, mViewModel.alarmModel.ringtone);
+    }
+
+    @Override
+    public void onSongMusicItemClick() {
+        mNavigatorApp.goToRingTonePick(this, false, MUSIC, mViewModel.alarmModel.ringtoneMusic);
     }
 
     @Override
     public void onDurationItemClick() {
-        DurationAlarmDialog dialog = DurationAlarmDialog.getInstanxe((int) mViewModel.alarmModel.durationMinute, (int) mViewModel.alarmModel.durationSecond);
+        DurationAlarmDialog dialog = DurationAlarmDialog.getInstanxe(TONE, (int) mViewModel.alarmModel.durationMinute, (int) mViewModel.alarmModel.durationSecond);
         dialog.setOnDurationAlarmCallback(this);
         dialog.show(getSupportFragmentManager(), "Duration Dialog");
+    }
+
+    @Override
+    public void onDurationMusicItemClick() {
+        DurationAlarmDialog dialog = DurationAlarmDialog.getInstanxe(MUSIC, (int) mViewModel.alarmModel.durationMusicMinute, (int) mViewModel.alarmModel.durationMusicSecond);
+        dialog.setOnDurationAlarmCallback(this);
+        dialog.show(getSupportFragmentManager(), "Duration Music Dialog");
     }
 
     @Override
@@ -134,6 +151,14 @@ public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, 
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         mViewModel.alarmModel.ringtone = data.getParcelableExtra(Constant.KEY_INTENT_RESULT.RING_TONE);
+                        mViewModel.alarmModel.notifyChange();
+                    }
+                }
+                break;
+            case Constant.REQUEST_CODE.PICK_RING_MUSIC:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        mViewModel.alarmModel.ringtoneMusic = data.getParcelableExtra(Constant.KEY_INTENT_RESULT.RING_TONE);
                         mViewModel.alarmModel.notifyChange();
                     }
                 }
@@ -166,9 +191,17 @@ public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, 
     }
 
     @Override
-    public void onDurationAlarmCallback(int durationMinute, int durationSecond) {
-        mViewModel.alarmModel.durationMinute = durationMinute;
-        mViewModel.alarmModel.durationSecond = durationSecond;
+    public void onDurationAlarmCallback(@RingToneType int type, int durationMinute, int durationSecond) {
+        switch (type) {
+            case RingToneType.MUSIC:
+                mViewModel.alarmModel.durationMusicMinute = durationMinute;
+                mViewModel.alarmModel.durationMusicSecond = durationSecond;
+                break;
+            case RingToneType.TONE:
+                mViewModel.alarmModel.durationMinute = durationMinute;
+                mViewModel.alarmModel.durationSecond = durationSecond;
+                break;
+        }
         mViewModel.alarmModel.notifyChange();
     }
 }

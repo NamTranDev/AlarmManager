@@ -20,6 +20,7 @@ public class Preference implements IPreference {
     private static final String ALARM_24H = "Alarm 24h";
     private static final String ALARM_WET_MODE = "Alarm Wet Mode";
     private static final String ALARM_DEFAULT_RINGTONE = "Alarm Default Ringtone";
+    private static final String ALARM_DEFAULT_RINGTONE_MUSIC = "Alarm Default Ringtone Music";
 
     /**
      * normal configurations
@@ -72,6 +73,22 @@ public class Preference implements IPreference {
     public void setListDefaultRingTone(ListRingTone listDefaultRingtone) {
         final SharedPreferences.Editor editor = mPref.edit();
         editor.putString(ALARM_DEFAULT_RINGTONE, new Gson().toJson(listDefaultRingtone));
+        editor.apply();
+    }
+
+    @Override
+    public ListRingTone getListDefaultRingtoneMusic() {
+        String ringtoneString = mPref.getString(ALARM_DEFAULT_RINGTONE_MUSIC, EMPTY);
+        if (!TextUtils.isDigitsOnly(ringtoneString)) {
+            return new Gson().fromJson(ringtoneString, ListRingTone.class);
+        }
+        return new ListRingTone().getDefault(mApp);
+    }
+
+    @Override
+    public void setListDefaultRingToneMusic(ListRingTone listDefaultRingtoneMusic) {
+        final SharedPreferences.Editor editor = mPref.edit();
+        editor.putString(ALARM_DEFAULT_RINGTONE_MUSIC, new Gson().toJson(listDefaultRingtoneMusic));
         editor.apply();
     }
 }
