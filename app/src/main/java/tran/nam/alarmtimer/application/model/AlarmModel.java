@@ -3,6 +3,7 @@ package tran.nam.alarmtimer.application.model;
 import android.databinding.BaseObservable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +64,10 @@ public class AlarmModel extends BaseObservable implements Parcelable {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof AlarmModel && ((AlarmModel) obj).id == id;
+    }
+
+    public boolean isMusicTone(){
+        return ringtoneMusic.ringToneModels.size() == 1 && TextUtils.isEmpty(ringtoneMusic.ringToneModels.get(0).uri);
     }
 
     public String getDuration() {

@@ -3,6 +3,7 @@ package tran.nam.alarmtimer.application.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.Calendar;
 
@@ -47,7 +48,7 @@ public class AddAlarmViewModel extends BaseViewModel {
         Calendar rightNow = Calendar.getInstance();
         int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
         int currentMinute = rightNow.get(Calendar.MINUTE);
-        alarmModel = new AlarmModel("Bell", currentHour, currentMinute, new int[]{2, 3, 4, 5, 6}, this.mPreferenceModel.defaultRingtone, 0, 3, this.mPreferenceModel.defaultRingtoneMusic, 0, 3, this.mPreferenceModel.isWetMode, true);
+        alarmModel = new AlarmModel("Bell", currentHour, currentMinute, new int[]{2, 3, 4, 5, 6}, this.mPreferenceModel.defaultRingtone, 0, 3, this.mPreferenceModel.defaultRingtoneMusic, 0, TextUtils.isEmpty(this.mPreferenceModel.defaultRingtoneMusic.ringToneModels.get(0).uri) ? 0 : 3, this.mPreferenceModel.isWetMode, true);
         alarmModel.is24h = this.mPreferenceModel.is24h;
     }
 

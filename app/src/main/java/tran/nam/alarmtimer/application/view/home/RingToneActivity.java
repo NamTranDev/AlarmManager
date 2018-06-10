@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import tran.nam.util.Constant;
 import tran.nam.util.StatusBarUtil;
 
 import static ringtone.util.RingtoneTypes.TYPE_MUSIC;
+import static tran.nam.util.Constant.EMPTY;
 
 public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBinding, RingtoneViewModel> implements ToolbarItemClick.OnIvOptionalStartClick, RingtoneLoaderTask.LoadCompleteListener, RingToneAdapter.OnItemRingToneClick, ToolbarItemClick.OnTvOptionalEndClick {
 
@@ -113,7 +115,12 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
     public void onLoadComplete(@NonNull HashMap<String, Uri> ringtone) {
         mViewDataBinding.viewFlipper.setDisplayedChild(1);
         List<RingToneModel> ringToneModels = new ArrayList<>();
-        RingToneModel defaultRingTone = new RingToneModel(getString(tran.nam.flatform.R.string.title_default_list_item), "R.raw.bell");
+        if (typeRingTone == RingToneType.MUSIC){
+            RingToneModel noneRingTone = new RingToneModel(getString(tran.nam.flatform.R.string.title_none_ring_tone), EMPTY);
+            noneRingTone.isChoose = listRingTone.contains(noneRingTone);
+            ringToneModels.add(noneRingTone);
+        }
+        RingToneModel defaultRingTone = new RingToneModel(getString(tran.nam.flatform.R.string.title_default_ring_tone), "R.raw.bell");
         defaultRingTone.isChoose = listRingTone.contains(defaultRingTone);
         ringToneModels.add(defaultRingTone);
         for (Map.Entry<String, Uri> entry : ringtone.entrySet()) {
@@ -130,6 +137,16 @@ public class RingToneActivity extends BaseActivityMVVM<ActivityRingtonePickerBin
 
     @Override
     public void onItemRingToneClick(RingToneModel item, int position) {
+        if (TextUtils.isEmpty(item.uri)){
+            mAdapter.noneChoose();
+            item.isChoose = !item.isChoose;
+            mAdapter.notifyDataSetChanged();
+            return;
+        }else {
+            if (typeRingTone == RingToneType.MUSIC){
+                mAdapter.clearNoneChoose();
+            }
+        }
         item.isChoose = !item.isChoose;
         mAdapter.notifyItemChanged(position);
     }

@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:onClick="@{() -> itemClick.onSongItemMusicClick()}"
-                android:text="Default sound music"
+                android:text="Default music"
                 android:textColor="@android:color/white"
                 app:fontSize="7"
                 app:fontStyle="medium"

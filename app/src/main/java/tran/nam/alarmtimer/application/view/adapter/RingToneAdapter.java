@@ -2,7 +2,6 @@ package tran.nam.alarmtimer.application.view.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -12,15 +11,17 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import tran.nam.alarmtimer.R;
-import tran.nam.alarmtimer.databinding.AdapterRingToneBinding;
 import tran.nam.alarmtimer.application.model.RingToneModel;
+import tran.nam.alarmtimer.databinding.AdapterRingToneBinding;
 import tran.nam.common.DataBoundListAdapter;
 
-public class RingToneAdapter extends DataBoundListAdapter<RingToneModel,AdapterRingToneBinding>{
+public class RingToneAdapter extends DataBoundListAdapter<RingToneModel, AdapterRingToneBinding> {
 
     private OnItemRingToneClick onItemRingToneClick;
 
-    @Inject RingToneAdapter() {}
+    @Inject
+    RingToneAdapter() {
+    }
 
     public void setOnItemRingToneClick(OnItemRingToneClick onItemRingToneClick) {
         this.onItemRingToneClick = onItemRingToneClick;
@@ -30,22 +31,30 @@ public class RingToneAdapter extends DataBoundListAdapter<RingToneModel,AdapterR
     protected AdapterRingToneBinding createBinding(ViewGroup parent) {
         AdapterRingToneBinding biding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.adapter_ring_tone, parent, false);
         biding.getRoot().setOnClickListener(v -> {
-            if (onItemRingToneClick != null){
+            if (onItemRingToneClick != null) {
                 onItemRingToneClick.onItemRingToneClick(biding.getRingTone(), Objects.requireNonNull(items).indexOf(biding.getRingTone()));
             }
         });
         return biding;
     }
 
-    public List<RingToneModel> getListChoose(){
+    public List<RingToneModel> getListChoose() {
         List<RingToneModel> ringToneModels = new ArrayList<>();
-        if (items != null){
-            for (RingToneModel ringToneModel : items){
+        if (null != items) {
+            for (RingToneModel ringToneModel : items) {
                 if (ringToneModel.isChoose)
                     ringToneModels.add(ringToneModel);
             }
         }
         return ringToneModels;
+    }
+
+    public void noneChoose() {
+        if (null != items) {
+            for (RingToneModel ringToneModel : items) {
+                ringToneModel.isChoose = false;
+            }
+        }
     }
 
     @Override
@@ -63,7 +72,14 @@ public class RingToneAdapter extends DataBoundListAdapter<RingToneModel,AdapterR
         return false;
     }
 
-    public interface OnItemRingToneClick{
+    public void clearNoneChoose() {
+        if (null != items) {
+            items.get(0).isChoose = false;
+            notifyItemChanged(0);
+        }
+    }
+
+    public interface OnItemRingToneClick {
         void onItemRingToneClick(RingToneModel item, int position);
     }
 }

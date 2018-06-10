@@ -159,6 +159,13 @@ public class AddAlarmActivity extends BaseActivityMVVM<ActivityAddAlarmBinding, 
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         mViewModel.alarmModel.ringtoneMusic = data.getParcelableExtra(Constant.KEY_INTENT_RESULT.RING_TONE);
+                        if (TextUtils.isEmpty(mViewModel.alarmModel.ringtoneMusic.ringToneModels.get(0).uri)){
+                            mViewModel.alarmModel.durationMusicMinute = 0;
+                            mViewModel.alarmModel.durationMusicSecond = 0;
+                        }else {
+                            mViewModel.alarmModel.durationMusicMinute = 0;
+                            mViewModel.alarmModel.durationMusicSecond = 3;
+                        }
                         mViewModel.alarmModel.notifyChange();
                     }
                 }

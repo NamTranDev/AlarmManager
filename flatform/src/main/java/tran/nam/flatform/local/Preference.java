@@ -82,7 +82,7 @@ public class Preference implements IPreference {
         if (!TextUtils.isDigitsOnly(ringtoneString)) {
             return new Gson().fromJson(ringtoneString, ListRingTone.class);
         }
-        return new ListRingTone().getDefault(mApp);
+        return new ListRingTone().getDefaultMusic(mApp);
     }
 
     @Override

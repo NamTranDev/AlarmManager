@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.Random;
 
@@ -70,7 +71,11 @@ public class AlarmActivityViewModel extends BaseViewModel {
         ListRingToneModel listRingToneMusicModel = this.alarm.ringtoneMusic;
         if (listRingToneMusicModel != null && listRingToneMusicModel.ringToneModels != null && listRingToneMusicModel.ringToneModels.size() > 0) {
             int random = new Random().nextInt(listRingToneMusicModel.ringToneModels.size());
-            ringMusic = listRingToneMusicModel.ringToneModels.get(random);
+            RingToneModel musicTone = listRingToneMusicModel.ringToneModels.get(random);
+            if (TextUtils.isEmpty(musicTone.uri))
+                ringMusic = null;
+            else
+                ringMusic = musicTone;
         }
         return this.alarm;
     }
